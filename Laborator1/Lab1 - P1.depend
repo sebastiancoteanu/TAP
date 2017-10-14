@@ -1,0 +1,13 @@
+# depslib dependency file v1.0
+1507463899 source:e:\fmi - ii\tap\lab1 - p1\main.cpp
+	<iostream>
+	<vector>
+	<algorithm>
+	<map>
+
+1507463899 source:c:\users\sebastian\desktop\dd\main.cpp
+	<iostream>
+	<vector>
+	<algorithm>
+	<map>
+
