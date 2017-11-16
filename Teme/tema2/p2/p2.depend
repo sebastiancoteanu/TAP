@@ -1,0 +1,6 @@
+# depslib dependency file v1.0
+1510511420 source:e:\fmi - ii\tap\teme\tema2\p2\main.cpp
+	<iostream>
+	<math.h>
+	<cstdlib>
+
