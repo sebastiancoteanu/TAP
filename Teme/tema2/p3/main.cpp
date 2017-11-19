@@ -84,6 +84,5 @@ int main()
     read(elements, numberOfElements);
     k = numberOfElements / 2;
     findMedian(elements, 1, numberOfElements, k);
-    display(elements, numberOfElements);
     return 0;
 }
