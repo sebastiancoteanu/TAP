@@ -22,62 +22,66 @@ double getDistBetween(Point p1, Point p2) {
     return sqrt(pow(p1.x - p2.x, 2) + pow(p1.y - p2.y, 2));
 }
 
-void citire(int &n, vector<Point> &points) {
+void citire(int &n, vector<Point> &pointsx, vector<Point> &pointsy) {
     int i;
     f >> n;
     for(i = 0; i < n; i++) {
         Point p;
         f >> p.x >> p.y;
-        points.push_back(p);
+        pointsx.push_back(p);
+        pointsy.push_back(p);
     }
 }
 
-int cmp(Point p1, Point p2) {
+int cmpx(Point p1, Point p2) {
     return p1.x < p2.x;
 }
 
-void interclass(vector<Point> &points, int left, int mid, int right) {
+int cmpy(Point p1, Point p2) {
+    return p1.y < p2.y;
+}
+
+void restructure(vector<Point> &points, int left, int mid, int right) {
     vector<Point> pts;
-    int j = left, k = mid + 1;
-    while(j <= mid && k <= right) {
-        if(points[j].y <= points[k].y) {
-            pts.push_back(points[j]);
-            j++;
-        }
-        else {
-            pts.push_back(points[k]);
-            k++;
+    int i, k = 0;
+    for(i = left; i <= right; i++) {
+        if(points[i].x <= points[mid].x) {
+            pts.push_back(points[i]);
         }
     }
-    while(j <= mid) {
-        pts.push_back(points[j]);
-        j++;
+    for(i = left; i <= right; i++) {
+        if(points[i].x > points[mid].x) {
+            pts.push_back(points[i]);
+        }
     }
-    while(k <= right) {
-        pts.push_back(points[k]);
+    for(i = left; i <= right; i++) {
+        points[i] = pts[k];
         k++;
     }
 }
 
-solution divImp(vector<Point> points, int left, int right) {
-    int l = right - left + 1;
+solution divImp(vector<Point> pointsx, vector<Point> &pointsy, int left, int right) {
+    int l = right - left + 1, i;
     solution s;
     if(l < 4) {
         s.dist = 1000000001;
         for(int i = left; i <= right; i++) {
             for(int j = i + 1; j <= right; j++) {
-                double dist = getDistBetween(points[i], points[j]);
+                double dist = getDistBetween(pointsx[i], pointsx[j]);
                 if(s.dist > dist) {
                     s.dist = dist;
-                    s.p1 = points[i];
-                    s.p2 = points[j];
+                    s.p1 = pointsx[i];
+                    s.p2 = pointsx[j];
                 }
             }
         }
     } else {
         int mid = (left + right) / 2;
-        solution s1 = divImp(points, left, mid); // solution from left
-        solution s2 = divImp(points, mid + 1, right); // solution from right
+
+        restructure(pointsy, left, mid, right);
+
+        solution s1 = divImp(pointsx, pointsy, left, mid); // solution from left
+        solution s2 = divImp(pointsx, pointsy, mid + 1, right); // solution from right
 
         if(s1.dist <= s2.dist) {
             s = s1;
@@ -85,15 +89,12 @@ solution divImp(vector<Point> points, int left, int right) {
             s = s2;
         }
 
-        // interclass left and right side
-        interclass(points, left, mid, right);
-
         // pts = pointsY intersected with BAND
         vector<Point> pts;
         for(int i = left; i <= right; i++) {
-            double x = points[i].x - points[mid].x;
+            double x = pointsy[i].x - pointsy[mid].x;
             if(fabs(x) <= s.dist) {
-                pts.push_back(points[i]);
+                pts.push_back(pointsy[i]);
             }
         }
 
@@ -114,13 +115,16 @@ solution divImp(vector<Point> points, int left, int right) {
 int main()
 {
     int n;
-    vector<Point> points;
-    citire(n, points);
+    vector<Point> pointsx, pointsy;
+    citire(n, pointsx, pointsy);
 
-    // sort points by x coordinate
-    sort(points.begin(), points.end(), cmp);
+    // sort pointsx by x coordinate
+    sort(pointsx.begin(), pointsx.end(), cmpx);
 
-    solution s = divImp(points, 0, n - 1);
+    // sort pointsy by y coordinate
+    sort(pointsy.begin(), pointsy.end(), cmpy);
+
+    solution s = divImp(pointsx, pointsy, 0, n - 1);
 
     g << s.dist << '\n';
 
