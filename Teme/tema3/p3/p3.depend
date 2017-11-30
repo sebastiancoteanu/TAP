@@ -1,0 +1,7 @@
+# depslib dependency file v1.0
+1512069285 source:e:\fmi - ii\tap\teme\tema3\p3\main.cpp
+	<iostream>
+	<fstream>
+	<vector>
+	<string>
+
