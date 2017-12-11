@@ -35,32 +35,44 @@ void recursiveDisplay(vector<Cube> cubes, int *t, int pos) {
 }
 
 void dp(vector<Cube> &cubes) {
-    int i, j, *d = new int[cubes.size()], *t = new int[cubes.size()], posMax = 0;
+    int i, j, *d = new int[cubes.size()], *t = new int[cubes.size()], *nr = new int[cubes.size()](), maxHeight, posMax = 0, maxInNr = 0;
     for(i = 0; i < cubes.size(); i++) {
         t[i] = -1;
-        d[i] = 1;
+        d[i] = cubes[i].len;
     }
+    nr[0] = 1;
     for(i = 0; i < cubes.size(); i++) {
+        maxHeight = 0;
         for(j = i - 1; j >= 0; j--) {
             if(cubes[i].color != cubes[j].color && cubes[i].len != cubes[j].len) {
-                if(d[j] + 1 > d[i]) {
+                if(d[j] + cubes[i].len > d[i]) {
                     t[i] = j;
-                    d[i] = d[j] + 1;
+                    d[i] = d[j] + cubes[i].len;
+                    maxHeight = max(maxHeight, d[i]);
+                }
+            }
+        }
+        for(j = i - 1; j >= 0; j--) {
+            if(cubes[i].color != cubes[j].color && cubes[i].len != cubes[j].len) {
+                if(d[j] + cubes[i].len == maxHeight) {
+                    nr[i]++;
                 }
             }
         }
         if(d[i] > d[posMax]) {
             posMax = i;
         }
+        maxInNr = max(maxInNr, nr[i]);
     }
     i = posMax;
     j = 0;
     recursiveDisplay(cubes, t, posMax);
     for(i = 0; i < cubes.size(); i++) {
-        if(d[i] == d[posMax]) {
+        if(maxInNr == nr[i]) {
             j++;
         }
     }
+
     g << j << '\n';
 }
 
