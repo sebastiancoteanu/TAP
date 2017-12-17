@@ -1,0 +1,17 @@
+# depslib dependency file v1.0
+1513348092 source:e:\fmi - ii\tap\teme\tema2\cmap\main.cpp
+	<fstream>
+	<iostream>
+	<vector>
+	<algorithm>
+	<math.h>
+	<cstdlib>
+
+1513348092 source:c:\users\sebastian\desktop\cmap\main.cpp
+	<fstream>
+	<iostream>
+	<vector>
+	<algorithm>
+	<math.h>
+	<cstdlib>
+

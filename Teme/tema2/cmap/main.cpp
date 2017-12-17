@@ -1,4 +1,5 @@
 #include <fstream>
+#include <iostream>
 #include <vector>
 #include <algorithm>
 #include <math.h>
@@ -44,6 +45,8 @@ int cmpy(Point p1, Point p2) {
 void restructure(vector<Point> pointsx, vector<Point> pointsy, int left, int mid, int right, vector <Point> &pointsyLeft, vector <Point> &pointsyRight) {
     vector<Point> pts;
     int i, k = 0;
+    pointsyLeft.clear();
+    pointsyRight.clear();
     for(i = left; i <= right; i++) {
         if(pointsy[i].x <= pointsx[mid].x) {
             pointsyLeft.push_back(pointsy[i]);
@@ -56,7 +59,7 @@ void restructure(vector<Point> pointsx, vector<Point> pointsy, int left, int mid
     }
 }
 
-solution divImp(vector<Point> pointsx, vector<Point> &pointsy, int left, int right) {
+solution divImp(vector<Point> pointsx, vector<Point> pointsy, int left, int right) {
     int l = right - left + 1, i;
     solution s;
     if(l < 4) {
@@ -75,10 +78,15 @@ solution divImp(vector<Point> pointsx, vector<Point> &pointsy, int left, int rig
         int mid = (left + right) / 2;
 
         vector<Point> pointsyLeft, pointsyRight;
+        pointsyLeft.clear();
+        pointsyRight.clear();
         restructure(pointsx, pointsy, left, mid, right, pointsyLeft, pointsyRight);
 
-        solution s1 = divImp(pointsx, pointsy, left, mid); // solution from left
-        solution s2 = divImp(pointsx, pointsy, mid + 1, right); // solution from right
+        for(int i = 0; i < pointsyLeft.size(); i++) cout << pointsyLeft[i].x << " ";
+        cout << '\n' << '\n';
+
+        solution s1 = divImp(pointsx, pointsyLeft, left, mid); // solution from left
+        solution s2 = divImp(pointsx, pointsyRight, mid + 1, right); // solution from right
 
         if(s1.dist <= s2.dist) {
             s = s1;
@@ -98,7 +106,6 @@ solution divImp(vector<Point> pointsx, vector<Point> &pointsy, int left, int rig
         for(int i = 0; i < pts.size(); i++) {
             for(int j = i + 1; j <= i + 7 && j < pts.size(); j++) {
                 double dist = getDistBetween(pts[i], pts[j]);
-
                 if(s.dist > dist) {
                     s.dist = dist;
                     s.p1 = pts[i];
