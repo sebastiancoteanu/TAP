@@ -1,0 +1,9 @@
+# depslib dependency file v1.0
+1514982139 source:e:\fmi - ii\tap\suplimentar\cartidejoc\main.cpp
+	<iostream>
+	<fstream>
+
+1514982961 source:e:\fmi - ii\tap\suplimentar\cartidejoc-a\main.cpp
+	<iostream>
+	<fstream>
+
